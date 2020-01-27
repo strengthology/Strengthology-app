@@ -32,3 +32,5 @@ The composition of the Set table:
  - rate of percieved exertion
  - tempo
  - duration
+
+ SQLite Mock reference guide => https://www.techiediaries.com/mocking-native-sqlite-plugin/
