@@ -19,25 +19,24 @@ export class DatabaseService {
   ) { }
 
   public async initDatabase() {
-    try {
+
       await this.sqlite.create({name: "data.db", location: "default"}).then((db : SQLiteObject) => {
                     this.database = db;
                 }, (error) => {
                     console.log("ERROR: ", error);
       });
+
       this.createTable();
-    } catch (e) {
-      console.log(e);
-    }
+
   }
 
-  private async createTable(){
+  public async createTable(){
     await this.http.get('../../assets/sql/exampleTable.sql', {responseType: 'text'})
             .toPromise().then((data) => {
               // console.log(data);
               this.createTableSql = data;
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {console.log(e)});
 
     this.database.executeSql(this.createTableSql, [])
         .then(() => {
