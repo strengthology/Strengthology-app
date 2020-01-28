@@ -36,7 +36,7 @@ export class DatabaseService {
               // console.log(data);
               this.createTableSql = data;
           })
-          .catch((e) => {console.log(e)});
+          .catch((e) => {console.log(`error`)});
 
     this.database.executeSql(this.createTableSql, [])
         .then(() => {
