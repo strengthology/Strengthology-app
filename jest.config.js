@@ -1,15 +1,19 @@
 module.exports = {
-    verbose: true,
-    preset: "jest-preset-angular",
+    preset: 'jest-preset-angular',
+    roots: ['src'],
+    transform: {
+      '^.+\\.(ts|js|html)$': 'ts-jest',
+    },
+    // setupFilesAfterEnv: ['<rootDir>/src/setup-jest.ts'],
     moduleNameMapper: {
-      "^@app/(.*)": "<rootDir>/src/app/$1"
+      '@app/(.*)': '<rootDir>/src/app/$1',
+      '@assets/(.*)': '<rootDir>/src/assets/$1',
+      '@core/(.*)': '<rootDir>/src/app/core/$1',
+      '@env': '<rootDir>/src/environments/environment',
+      '@src/(.*)': '<rootDir>/src/src/$1',
+      '@state/(.*)': '<rootDir>/src/app/state/$1'
     },
     transformIgnorePatterns: [
-     '<rootDir>/node_modules/(?!@ngrx|@ionic-native|@ionic)',
-     '^.+\\.js$',
-     '/node_modules/',
-     'index.js',
-     '/@ionic-native/',
+      '/node_modules/(?!@ionic|ngx-socket-io/).+\\.js$'
     ]
-    
-}
+  };
