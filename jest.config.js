@@ -1,5 +1,6 @@
 module.exports = {
     preset: 'jest-preset-angular',
+    rootDir: "../strengthology-app",
     roots: ['src'],
     transform: {
       '^.+\\.(ts|js|html)$': 'ts-jest',
