@@ -9,8 +9,11 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { SQLite  , SQLiteDatabaseConfig , SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { DatabaseService}  from './database/database.service';
 
+import { SQLite, SQLiteDatabaseConfig} from '@ionic-native/sqlite/ngx';
+
+import { HttpClientModule } from '@angular/common/http';
 
 declare var SQL;
 export class SQLiteMock {
@@ -23,13 +26,58 @@ export class SQLiteMock {
     });
   }
 } 
+
+export class SQLiteObject{
+  _objectInstance: any;
+
+  constructor(_objectInstance: any){
+      this._objectInstance = _objectInstance;
+  };
+
+  executeSql(statement: string, params: any): Promise<any>{
+
+    return new Promise((resolve,reject)=>{
+      try {
+        var st = this._objectInstance.prepare(statement,params);
+        console.log(st);
+        var rows :Array<any> = [] ;
+        while(st.step()) { 
+            var row = st.getAsObject();
+            rows.push(row);
+        }
+        var payload = {
+          rows: {
+            item: function(i) {
+              return rows[i];
+            },
+            length: rows.length
+          },
+          // Disable the below code due to getRowsModified being undefined
+          // rowsAffected: this._objectInstance.getRowsModified() || 0,
+          insertId: this._objectInstance.insertId || void 0
+        };  
+  
+        //save database after each sql query 
+  
+        var arr : ArrayBuffer = this._objectInstance.export();
+        localStorage.setItem("database",String(arr));
+        resolve(payload);
+      } catch(e){
+        reject(e);
+      }
+    });
+  };
+}
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent ],
   entryComponents: [],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,
@@ -37,7 +85,7 @@ export class SQLiteMock {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // SQLite,
     {provide: SQLite, useClass: SQLiteMock},
-
+    DatabaseService,
   ],
   bootstrap: [AppComponent]
 })
