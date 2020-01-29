@@ -9,7 +9,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-toolbar>
-  <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel"></ion-searchbar>
+  <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel" (ionChange)="searchExercises()" [(ngModel)]="searchValue">
+  </ion-searchbar>
 </ion-toolbar>
 <ion-fab vertical="bottom" horizontal="end" activated="false" edge slot="fixed" style="margin-bottom: 2.5rem">
   <ion-fab-button>
@@ -29,13 +30,22 @@
 </ion-fab>
 <ion-content>
   <ion-item class="col-12 p-0">
-    <div class="col-4 row centerText col-def" (click)="listByName()">
+    <div class="col-4 row centerText col-def selected" (click)="listByName()" *ngIf="selectName">
       Name
     </div>
-    <div class="col-4 row centerText col-def" (click)="listByType()">
+    <div class="col-4 row centerText col-def" (click)="listByName()" *ngIf="!selectName">
+      Name
+    </div>
+    <div class="col-4 row centerText col-def selected" (click)="listByType()" *ngIf="selectType">
       Type
     </div>
-    <div class="col-4 row centerText col-def" (click)="listByCategory()">
+    <div class="col-4 row centerText col-def" (click)="listByType()" *ngIf="!selectType">
+      Type
+    </div>
+    <div class="col-4 row centerText col-def selected" (click)="listByCategory()" *ngIf="selectCategory">
+      Category
+    </div>
+    <div class="col-4 row centerText col-def" (click)="listByCategory()" *ngIf="!selectCategory">
       Category
     </div>
   </ion-item>
