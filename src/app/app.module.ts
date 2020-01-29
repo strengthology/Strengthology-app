@@ -43,7 +43,7 @@ export class SQLiteObject{
     return new Promise((resolve,reject)=>{
       try {
         var st = this._objectInstance.prepare(statement,params);
-        console.log(st);
+        // console.log(st);
         var rows :Array<any> = [] ;
         while(st.step()) { 
             var row = st.getAsObject();

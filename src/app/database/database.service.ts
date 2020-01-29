@@ -40,17 +40,20 @@ export class DatabaseService {
       }));
   }
 
-  public fillDatabase() {
-    this.http.get('assets/sql/exerciseTable.sql', {responseType: 'text'}).toPromise().then((sql: string) => {
-      this.database.executeSql(sql, [])
-      .then(() => {
-          this.storage.set('database_filled', true);
-          this.database.executeSql(`select * from exercises`).then(x => {
-            console.log(x);
-          })
-      })
-      .catch((e) => console.log(e)); 
-    });
+  public async fillDatabase() {
+    await this.http.get('assets/sql/exerciseTable.sql', {responseType: 'text'}).toPromise().then(async (res: string) => {
+      const sqlArray = res.split(';');
+      await Promise.all(sqlArray.map(async (sql) => {
+        await this.database.executeSql(sql, [])
+        .catch((e) => console.log(e)); 
+        }));
+      }).then(() => {
+        this.storage.set('database_filled', true); 
+        this.selectAllFromTable(`exercises`).then((res) => {
+          console.log(res);
+        })
+      });
+     
   }
 
   public async createTable(source: string){
@@ -63,5 +66,17 @@ export class DatabaseService {
               })
               .catch((e) => console.log(e));    
         });
+  }
+
+  public selectAllFromTable(table: string): Promise<any> {
+    return this.database.executeSql(`select * from ${table}`, []).then((res )=> {
+      const row_data = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          row_data.push(res.rows.item(i));
+        }
+      }
+      return row_data;
+    });
   }
 }
