@@ -4,13 +4,53 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      List
+      Exercises
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
+<ion-toolbar>
+  <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel"></ion-searchbar>
+</ion-toolbar>
+<ion-fab vertical="bottom" horizontal="end" activated="false" edge slot="fixed" style="margin-bottom: 2.5rem">
+  <ion-fab-button>
+    <ion-icon name="arrow-dropup"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button (click)="delete()" color="danger">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button (click)="cancel()" color="warning">
+      <ion-icon name="close"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button (click)="save()" color="success">
+      <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>
 <ion-content>
-  <ion-list>
+  <ion-item class="col-12 p-0">
+    <div class="col-4 row centerText col-def" (click)="listByName()">
+      Name
+    </div>
+    <div class="col-4 row centerText col-def" (click)="listByType()">
+      Type
+    </div>
+    <div class="col-4 row centerText col-def" (click)="listByCategory()">
+      Category
+    </div>
+  </ion-item>
+  <ion-item *ngFor='let exercise of exerciseList' class="col-12">
+    <div class="col-4 row centerText">
+      {{exercise.exerciseName.substring(0, 14)}}
+    </div>
+    <div class="col-4 row centerText">
+      {{exercise.exerciseType}}
+    </div>
+    <div class="col-4 row centerText">
+      {{exercise.exerciseCategory}}
+    </div>
+  </ion-item>
+  <!-- <ion-list>
     <ion-item *ngFor="let item of items">
       <ion-icon [name]="item.icon" slot="start"></ion-icon>
       {{item.title}}
@@ -18,7 +58,7 @@
         {{item.note}}
       </div>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
   <!--
     <div *ngIf="selectedItem" padding>
       You navigated here from <b>{{selectedItem.title }}</b>

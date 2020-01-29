@@ -18,7 +18,7 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
+      title: 'Exercises',
       url: '/list',
       icon: 'list'
     }
@@ -34,9 +34,11 @@ export class AppComponent {
   }
 
   async initializeApp() {
-    await this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+    await this.platform.ready().then(async () => {
+      await this.dbService.initDatabase().then(() => {
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+      });
     });
   }
 }

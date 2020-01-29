@@ -79,6 +79,10 @@
     width: 8.33%;
 }
 
+.p-0 {
+    padding: 0;
+}
+
 .p-1 {
     padding: 0.5rem;
 }
@@ -119,3 +123,17 @@
     margin-bottom: 0.5rem;
 }
 
+.far-right-80 {
+    margin-left: 80%;
+}
+
+.col-def {
+    :hover {
+        background-color: lightblue;
+    }
+}
+
+ion-item{
+    --inner-padding-end: 0px;
+    --padding-start:0px
+}
