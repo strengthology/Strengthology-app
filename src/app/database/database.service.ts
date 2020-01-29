@@ -23,35 +23,33 @@ export class DatabaseService {
   ) { }
 
   public async initDatabase() {
-
-      await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
+     await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
               this.database = db;
               await this.storage.get('database_filled').then(val => {
-                if (!val) {
+                // if (!val) {
                   this.fillDatabase();
-                }
+                // }
               });
             }, (error) => {
               console.log("ERROR: ", error);
-      });
-
-      await Promise.all(this.sourceTables.map(async (source) => {      
-        this.createTable(source);
-      }));
+      })
+      .then(async () => {
+        await Promise.all(this.sourceTables.map(async (source) => {      
+          await this.createTable(source);
+        }));
+      })   
   }
 
   public async fillDatabase() {
     await this.http.get('assets/sql/exerciseTable.sql', {responseType: 'text'}).toPromise().then(async (res: string) => {
       const sqlArray = res.split(';');
+      console.log(`%c Creating Exercises`, 'color: blue; font-weight: bold');
       await Promise.all(sqlArray.map(async (sql) => {
         await this.database.executeSql(sql, [])
         .catch((e) => console.log(e)); 
         }));
       }).then(() => {
         this.storage.set('database_filled', true); 
-        this.selectAllFromTable(`exercises`).then((res) => {
-          console.log(res);
-        })
       });
      
   }
@@ -77,6 +75,8 @@ export class DatabaseService {
         }
       }
       return row_data;
-    });
+    }).catch((e) => {
+      console.log(e);
+    })
   }
 }

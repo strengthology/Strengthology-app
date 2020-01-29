@@ -24,6 +24,18 @@
     </ion-card-content>
   </ion-card>
 
+  <div *ngFor='let exercise of exerciseList' class="col-12 row">
+    <div class="col-4">
+      {{exercise.exerciseName}}
+    </div>
+    <div class="col-4">
+      {{exercise.exerciseType}}
+    </div>
+    <div class="col-4">
+      {{exercise.exerciseCategory}}
+    </div>
+  </div>
+  
   <ion-list lines="none">
     <ion-list-header>
       <ion-label>Resources</ion-label>
