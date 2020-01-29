@@ -1,5 +1,7 @@
 {
   "name": "strengthology",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

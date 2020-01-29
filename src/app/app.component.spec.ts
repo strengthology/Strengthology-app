@@ -8,15 +8,21 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
 import { DatabaseService } from './database/database.service';
+import { Storage } from '@ionic/storage';
+
 
 describe('AppComponent', () => {
     let dbService: DatabaseService;
     let sqLite: any;
     let httpClient: HttpClient;
     let httpHandler: HttpHandler;
+    let storage: Storage;
+    let sqlitePorter: SQLitePorter;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -28,7 +34,9 @@ describe('AppComponent', () => {
             SplashScreen,
             {provide: SQLite, use: {}},
             HttpClient,
-            {provide: HttpHandler, use: {} }
+            {provide: HttpHandler, use: {} },
+            {provide: Storage, use: {}},
+            {provide: SQLitePorter, use: {}}
         ],
         imports: [ RouterTestingModule.withRoutes([])],
         }).compileComponents();
@@ -36,7 +44,8 @@ describe('AppComponent', () => {
 
     beforeEach(async(() => {
         httpClient = new HttpClient(httpHandler);
-        dbService = new DatabaseService(sqLite, httpClient);
+
+        dbService = new DatabaseService(sqLite, httpClient, storage, sqlitePorter);
     }))
 
     it('should create the app', async () => {

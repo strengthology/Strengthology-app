@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -12,8 +14,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { DatabaseService}  from './database/database.service';
 
 import { SQLite, SQLiteDatabaseConfig} from '@ionic-native/sqlite/ngx';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 
-import { HttpClientModule } from '@angular/common/http';
+
+ 
 
 declare var SQL;
 export class SQLiteMock {
@@ -76,8 +80,10 @@ export class SQLiteObject{
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicStorageModule,
   ],
   providers: [
     StatusBar,
@@ -86,6 +92,7 @@ export class SQLiteObject{
     // SQLite,
     {provide: SQLite, useClass: SQLiteMock},
     DatabaseService,
+    SQLitePorter
   ],
   bootstrap: [AppComponent]
 })
