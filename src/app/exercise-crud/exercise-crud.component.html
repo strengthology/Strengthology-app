@@ -1,6 +1,28 @@
 <div>
   <div class="col-12 centerText">Create an Exercise</div>
   <form>
-    <input [(ngModel)]='exercise.exerciseName' class="col-10 m-2 mt-1 mb-1" name="Name" placeholder="Name">
+    <ion-item class="col-10 m-2 mt-1 mb-1">
+      <ion-label position="floating">Name</ion-label>
+      <ion-input [(ngModel)]='exercise.exerciseName' name="Name" placeholder="enter a name">
+      </ion-input>
+    </ion-item>
+    <ion-item class="col-10 m-2 mt-1 mb-1">
+      <ion-label position="floating">Type</ion-label>
+      <ion-select name="Type" [(ngModel)]="exercise.exerciseType">
+        <ion-select-option *ngFor="let option of typeOptions" value="{{option}}">
+          {{option}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="col-10 m-2 mt-1 mb-1">
+      <ion-label position="floating">Category</ion-label>
+      <ion-select name="Category" [(ngModel)]="exercise.exerciseCategory">
+        <ion-select-option *ngFor="let option of categoryOptions" value="{{option}}">
+          {{option}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button *ngIf="isValid()" 
+      class="col-10 m-2 mt-1 mb-1" color="primary" (click)="saveExercise()">Save</ion-button>
   </form>
 </div>

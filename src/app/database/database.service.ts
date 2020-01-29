@@ -97,13 +97,18 @@ export class DatabaseService {
     })
   }
 
-  public insertIntoExercise(exercise: Exercise) {
-    this.database.
+  public async insertIntoExercise(exercise: Exercise): Promise<Boolean> {
+    let status = null;
+    await this.database.
       executeSql(`insert into exercises (exerciseName, exerciseType, exerciseCategory) 
       values ('${exercise.exerciseName}', '${exercise.exerciseType}', '${exercise.exerciseCategory}');`)
-      .then((res) => {})
+      .then((res) => {
+        status = true;
+      })
       .catch((e) => {
         console.log(e);
-      })
+        status = false;
+      });
+    return status;
   }
 }
