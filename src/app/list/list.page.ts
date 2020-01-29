@@ -53,8 +53,7 @@ export class ListPage implements OnInit {
   }
 
   searchExercises(event) {
-    console.log(`%c Searching...`, 'color: green');
-    console.log(this.searchValue);
+    // console.log(`%c Searching...`, 'color: green');
     try {
       if (this.selectName) {
         this.exerciseList = this.list.filter((item) => { return item.exerciseName.toLowerCase().includes(this.searchValue.toLowerCase())});
@@ -73,7 +72,7 @@ export class ListPage implements OnInit {
       this.selectName = true;
       this.selectCategory = false;
       this.selectType = false;
-      console.log(`%c By Name`, 'color: green; font-weight: bold');
+      // console.log(`%c By Name`, 'color: green; font-weight: bold');
       if (!this.reverseName) {
         this.exerciseList.sort((a, b) => (a.exerciseName > b.exerciseName) ? 1 : -1);
         this.reverseName = true;
@@ -91,7 +90,7 @@ export class ListPage implements OnInit {
       this.selectName = false;
       this.selectCategory = false;
       this.selectType = true;
-      console.log(`%c By Type`, 'color: yellow; font-weight: bold');
+      // console.log(`%c By Type`, 'color: yellow; font-weight: bold');
       if (!this.reverseType) {
         this.exerciseList.sort((a, b) => (a.exerciseType > b.exerciseType) ? 1 : -1);
         this.reverseType = true;
@@ -109,7 +108,7 @@ export class ListPage implements OnInit {
       this.selectName = false;
       this.selectCategory = true;
       this.selectType = false;
-      console.log(`%c By Category`, 'color: red; font-weight: bold');
+      // console.log(`%c By Category`, 'color: red; font-weight: bold');
       if (!this.reverseCategory) {
         this.exerciseList.sort((a, b) => (a.exerciseCategory > b.exerciseCategory) ? 1 : -1);
         this.reverseCategory = true;
