@@ -35,6 +35,10 @@
     text-align: center;
 }
 
+.centerContent {
+    align-content: center;
+}
+
 .row {
     float: left;
 }
@@ -74,3 +78,44 @@
 .col-1 {
     width: 8.33%;
 }
+
+.p-1 {
+    padding: 0.5rem;
+}
+
+.p-2 {
+    padding: 1rem;
+}
+
+.p-3 {
+    padding: 1.5rem;
+}
+
+.m-1 {
+    margin: 4.166%;
+}
+
+.m-2 {
+    margin: 8.333%;
+}
+
+.m-3 {
+    margin: 1.5rem;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+

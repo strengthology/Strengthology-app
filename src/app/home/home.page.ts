@@ -22,7 +22,7 @@ export class HomePage implements AfterViewInit {
   }
 
   getExercises() {
-    this.dbService.selectAllFromTable(`exercises`).then((res) => {
+    this.dbService.selectFromTable(`*`, `exercises`).then((res) => {
       this.exerciseList = res as Array<Exercise>;
       console.log(this.exerciseList);
     }).catch((e) => {

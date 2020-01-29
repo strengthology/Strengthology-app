@@ -4,6 +4,7 @@ import { SQLite, SQLiteObject} from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
+import { Exercise } from '../models/exercise';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -66,8 +67,9 @@ export class DatabaseService {
         });
   }
 
-  public selectAllFromTable(table: string): Promise<any> {
-    return this.database.executeSql(`select * from ${table}`, []).then((res )=> {
+  public selectFromTable(sVal: string, table: string): Promise<any> {
+    return this.database.executeSql(`select ${sVal} from ${table}`, [])
+    .then((res )=> {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -78,5 +80,30 @@ export class DatabaseService {
     }).catch((e) => {
       console.log(e);
     })
+  }
+
+  public selectFromTableWhere(sVal: string, table: string, column: string, value: string): Promise<any> {
+    return this.database.executeSql(`select ${sVal} from ${table} where ${column} = ${value}`, [])
+    .then((res )=> {
+      const row_data = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          row_data.push(res.rows.item(i));
+        }
+      }
+      return row_data;
+    }).catch((e) => {
+      console.log(e);
+    })
+  }
+
+  public insertIntoExercise(exercise: Exercise) {
+    this.database.
+      executeSql(`insert into exercises (exerciseName, exerciseType, exerciseCategory) 
+      values ('${exercise.exerciseName}', '${exercise.exerciseType}', '${exercise.exerciseCategory}');`)
+      .then((res) => {})
+      .catch((e) => {
+        console.log(e);
+      })
   }
 }
