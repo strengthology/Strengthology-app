@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Exercise } from '../models/exercise';
 import { DatabaseService } from '../database/database.service';
-import { ToastController } from '@ionic/angular';
+import { AlertService } from '../notifications/alert.service';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class ExerciseCrudComponent implements OnInit {
 
   constructor(
     public dbService: DatabaseService,
-    public toastController: ToastController
+    public alertService: AlertService,
   ) { }
 
   ngOnInit() {}
@@ -29,7 +29,11 @@ export class ExerciseCrudComponent implements OnInit {
   saveExercise() {
     this.dbService.insertIntoExercise(this.exercise).then((res: Boolean) => {
       if (res) {
-        this.presentToastWithOptions().then(() => {
+        this.alertService.basicAlert('Exercise Saved', 'success').then(() => {
+          this.exercise = this.blankExercise;
+        });
+      } else {
+        this.alertService.basicAlert('Exercise Not Saved!', 'danger').then(() => {
           this.exercise = this.blankExercise;
         });
       }
@@ -44,30 +48,5 @@ export class ExerciseCrudComponent implements OnInit {
     }
   }
 
-  async presentToastWithOptions() {
-    const toast = await this.toastController.create({
-      header: 'Exercise Saved',
-      // message: 'Click to Close',
-      position: 'top',
-      color: 'success',
-      buttons: [
-        // {
-          // side: 'start',
-          // icon: 'star',
-          // text: 'Favorite',
-          // handler: () => {
-          //   console.log('Favorite clicked');
-          // }
-        // }, 
-        {
-          text: 'Done',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    toast.present();
-  }
+  
 }

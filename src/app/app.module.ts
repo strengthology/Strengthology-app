@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { DatabaseService}  from './database/database.service';
+import { AlertService } from './notifications/alert.service';
 
 import { SQLite, SQLiteDatabaseConfig} from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
@@ -92,6 +93,7 @@ export class SQLiteObject{
     // SQLite,
     {provide: SQLite, useClass: SQLiteMock},
     DatabaseService,
+    AlertService,
     SQLitePorter
   ],
   bootstrap: [AppComponent]
