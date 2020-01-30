@@ -30,8 +30,11 @@
     "@types/jasmine": "^3.5.2",
     "@types/jasminewd2": "^2.0.8",
     "bootstrap": "^4.4.1",
+    "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
+    "cordova-ios": "5.1.1",
     "core-js": "^2.5.4",
+    "ionic-resources": "^0.1.8",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
     "protractor": "^5.4.3",
@@ -76,7 +79,8 @@
       "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
-      "browser"
+      "browser",
+      "ios"
     ]
   }
 }
