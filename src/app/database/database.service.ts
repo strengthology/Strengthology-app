@@ -13,10 +13,12 @@ import { resolve } from 'url';
 })
 
 export class DatabaseService {
+  // flag used to delay dbService calls until after db is ready
   public databaseState: BehaviorSubject<Boolean>;
   public database: SQLiteObject;
 
-  private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql', 'assets/sql/dummyDataSessions.sql'];
+  private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql'];
+  private dummyData =  ['assets/sql/dummyDataSessions.sql'];
 
   constructor(
     public sqlite: SQLite,
@@ -28,6 +30,7 @@ export class DatabaseService {
   }
 
   public async initDatabase() {
+    // initial create block is used to create database and create+insert data into exercises table
      await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
               this.database = db;
               await this.storage.get('database_filled').then(val => {
@@ -39,10 +42,16 @@ export class DatabaseService {
               console.log("ERROR: ", error);
       })
       .then(async () => {
+        // creates tables
         await Promise.all(this.sourceTables.map(async (source) => {      
           await this.createTable(source);
         }));
-      }).then(() => {
+      }).then(async () => {
+        // inserts dummy data into table
+        // dev only
+        await Promise.all(this.dummyData.map(async (source) => {
+          await this.createTable(source);
+        }));
         this.setDatabaseState(true); 
       });
   }
