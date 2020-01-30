@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { ExerciseCrudComponent } from '../exercise-crud/exercise-crud.component';
+import { LastWorkoutComponent } from '../last-workout/last-workout.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { ExerciseCrudComponent } from '../exercise-crud/exercise-crud.component'
       }
     ])
   ],
-  declarations: [HomePage, ExerciseCrudComponent]
+  declarations: [HomePage, ExerciseCrudComponent, LastWorkoutComponent]
 })
 export class HomePageModule {}

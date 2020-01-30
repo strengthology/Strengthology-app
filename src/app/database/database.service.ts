@@ -5,23 +5,27 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { Exercise } from '../models/exercise';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DatabaseService {
+  public databaseState: BehaviorSubject<Boolean>;
   public database: SQLiteObject;
 
-  private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql'];
+  private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql', 'assets/sql/dummyDataSessions.sql'];
 
   constructor(
     public sqlite: SQLite,
     private http: HttpClient,
     public storage: Storage,
     public sqlitePorter: SQLitePorter
-  ) { }
+  ) { 
+    this.databaseState = new BehaviorSubject<boolean>(false);
+  }
 
   public async initDatabase() {
      await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
@@ -38,7 +42,17 @@ export class DatabaseService {
         await Promise.all(this.sourceTables.map(async (source) => {      
           await this.createTable(source);
         }));
-      })   
+      }).then(() => {
+        this.setDatabaseState(true); 
+      });
+  }
+
+  public getDatabaseState(): Observable<Boolean> {
+    return this.databaseState.asObservable();
+  }
+
+  public setDatabaseState(boolean: Boolean): void {
+    this.databaseState.next(boolean);
   }
 
   public async fillDatabase() {
