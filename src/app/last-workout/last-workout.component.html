@@ -1,23 +1,23 @@
-<ion-content>
+<ion-card color=primary> 
   <ng-container *ngIf="sessionList">
-  <h6 class="col-12 centerText mb-0">
-    You last worked out on {{sessionList[0].date.substring(0,10)}} 
-  </h6>
-  <h6 class="col-12 centerText mt-1 mb-0">
-    at {{sessionList[0].date.substring(11)}}
-  </h6>
-  <h6 class="col-12 centerText mt-1">
-    You performed {{sessionList[0].sets.length}} sets and lifted {{sessionReps()}} reps for a total of {{sessionVolume()}} lbs/kgs
-  </h6>
+    <h6 class="col-12 centerText mb-0">
+      You last worked out on {{sessionList[0].date.substring(0,10)}} 
+    </h6>
+    <h6 class="col-12 centerText mt-1 mb-0">
+      at {{sessionList[0].date.substring(11)}}
+    </h6>
+    <h6 class="col-12 centerText mt-1">
+      You performed {{sessionList[0].sets.length}} sets and lifted {{sessionReps()}} reps for a total of {{sessionVolume()}} lbs/kgs
+    </h6>
   <ion-list>
-    <div class="col-12">
+    <ion-item class="col-12" color="tertiary">
       <div class="col-2 row centerText">Set#</div>
       <div class="col-3 row centerText">Exercise</div>
       <div class="col-3 row centerText">Weight</div>
       <div class="col-2 row centerText">Reps</div>
       <div class="col-2 row centerText">RPE</div>
-    </div>
-    <ion-item *ngFor="let set of sessionList[0].sets; let i = index" class="col-12">
+    </ion-item>
+    <ion-item *ngFor="let set of sessionList[0].sets; let i = index" class="col-12" color="medium">
       <div class="col-2 row centerText">{{i}}</div>
       <div class="col-3 row centerText">{{set.exercise.exerciseName}}</div>
       <div class="col-3 row centerText">{{set.weight}} {{set.weightType}}</div>
@@ -29,4 +29,4 @@
   <ng-container *ngIf="!sessionList">
     You haven't worked out yet!
   </ng-container>
-</ion-content>
+</ion-card>
