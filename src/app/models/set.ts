@@ -1,13 +1,12 @@
 export class Set {
-   setId: number;
-   userId: number;
+   id: number;
    exerciseId: number;
-   sessionIndex: number;
-   timeStap: Date;
+   sessionId: number;
    weight: number;
-   distance: number;
+   weightType: string;
    reps: number;
    rpe: number;
-   tempo: Object; // TODO: tempo needs some type that can probably be cast to and from strings
-   duration: number;
+   // tempo: Object; // TODO: tempo needs some type that can probably be cast to and from strings
+   // duration: number;
+   // distance: number;
 }

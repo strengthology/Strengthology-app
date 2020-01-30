@@ -14,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 export class DatabaseService {
   public database: SQLiteObject;
 
-  private sourceTables = ['assets/sql/exampleTable.sql'];
+  private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql'];
 
   constructor(
     public sqlite: SQLite,
