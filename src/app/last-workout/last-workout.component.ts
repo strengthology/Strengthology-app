@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 
 import { Session } from '../models/sessions';
+import { Set } from '../models/set';
 import { DatabaseService } from '../database/database.service';
 
 @Component({
@@ -24,13 +25,11 @@ export class LastWorkoutComponent implements OnInit {
     });
   }
 
-  getSessions() {
-    this.dbService.selectFromTable(`*`, `sessions`).then((res) => {
+  public async getSessions() {
+    await this.dbService.selectFromTable(`*`, `sessions`).then(async (res) => {
       if (res) {
         this.sessionList = res as Session[];
-        this.sessionList.forEach((item: Session) => {
-          console.log(item.date);
-        });
+        await this.getSetData();
         this.sortSessions();
       }
     }).catch((e) => {
@@ -38,9 +37,18 @@ export class LastWorkoutComponent implements OnInit {
     });
   }
 
+  public async getSetData() {
+    await Promise.all(this.sessionList.map(async (item: Session) => {
+          await this.dbService.getAllSetsBySession(item.id).then((res) => {
+            item.sets = res as Set[];
+          });
+    }));
+  }
+
   sortSessions() {
     try {
       this.sessionList = this.sessionList.sort((a, b) => (a.date > b.date) ? 1 : -1);
+      console.log(this.sessionList);
     } catch (e) {
       console.log(e);
     }

@@ -5,6 +5,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { Exercise } from '../models/exercise';
+import { Session } from '../models/sessions';
+import { Set } from '../models/set';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { resolve } from 'url';
 
@@ -18,7 +20,7 @@ export class DatabaseService {
   public database: SQLiteObject;
 
   private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql'];
-  private dummyData =  ['assets/sql/dummyDataSessions.sql'];
+  private dummyData =  ['assets/sql/dummyDataSessions.sql', 'assets/sql/dummyDataSets.sql'];
 
   constructor(
     public sqlite: SQLite,
@@ -133,5 +135,21 @@ export class DatabaseService {
         status = false;
       });
     return status;
+  }
+
+  public async getAllSetsBySession(id: number) {
+    return this.database.executeSql(`select * from sets where sessionId = ${id}`).then(async (res) => {
+      const row_data = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          console.log(res.rows.item(i).exercise);
+          res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
+          row_data.push(res.rows.item(i));
+        }
+      }
+      return row_data;
+    }).catch((e) => {
+      console.log(e);
+    })
   }
 }

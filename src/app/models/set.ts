@@ -1,6 +1,7 @@
+import { Exercise } from './exercise';
 export class Set {
    id: number;
-   exerciseId: number;
+   exercise: Exercise;
    sessionId: number;
    weight: number;
    weightType: string;
