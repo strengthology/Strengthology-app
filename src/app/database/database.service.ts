@@ -142,7 +142,6 @@ export class DatabaseService {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
-          console.log(res.rows.item(i).exercise);
           res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
           row_data.push(res.rows.item(i));
         }
