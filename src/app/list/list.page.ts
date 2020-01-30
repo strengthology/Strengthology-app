@@ -44,6 +44,7 @@ export class ListPage implements OnInit {
 
   public getExercises() {
     this.dbService.selectFromTable(`*`, `exercises`).then((res) => {
+      console.log(res);
       this.exerciseList = res as Array<Exercise>;
       this.list = this.exerciseList;
       this.listByName();
