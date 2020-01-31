@@ -17,6 +17,7 @@ import { resolve } from 'url';
 export class DatabaseService {
   // flag used to delay dbService calls until after db is ready
   public databaseState: BehaviorSubject<Boolean>;
+  public insertingData: BehaviorSubject<Boolean>;
   public database: SQLiteObject;
 
   private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql'];
@@ -31,32 +32,54 @@ export class DatabaseService {
     this.databaseState = new BehaviorSubject<boolean>(false);
   }
 
+  public async createDatabase(): Promise<any> {
+      // initial create block is used to create database and create+insert data into exercises table
+     return await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
+      this.database = db;
+      await this.storage.get('database_filled').then(async (val) => {
+        if (!val) {
+          await this.fillDatabase(val);
+        }
+      });
+      }, (error) => {
+        console.log("ERROR: ", error);
+      });
+  }
+
+  public async executeCreateTables(): Promise<any> {
+    return await Promise.all(this.sourceTables.map(async (source) => {     
+      console.log(`%c Creating ${source}`, 'color: purple; font-weight: bold'); 
+      return await this.createTable(source).then(async (x) => {
+        console.log(x);
+        return true;
+      });
+    }));
+  }
+
+  public async insertDummyData(): Promise<any> {
+    return await Promise.all(this.dummyData.map(async (source) => {
+      console.log(`%c Inserting ${source}`, 'color: purple; font-weight: bold'); 
+      return await this.createTable(source).then(async (x) => {
+        console.log(x);
+        return true;
+      });
+    }));
+  }
+
   public async initDatabase() {
-    // initial create block is used to create database and create+insert data into exercises table
-     await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
-              this.database = db;
-              await this.storage.get('database_filled').then(async (val) => {
-                if (!val) {
-                  await this.fillDatabase(val);
-                }
-              });
-            }, (error) => {
-              console.log("ERROR: ", error);
-      })
-      .then(async () => {
-        // creates tables
-        await Promise.all(this.sourceTables.map(async (source) => {     
-          console.log(`%c Creating ${source}`, 'color: purple; font-weight: bold'); 
-          await this.createTable(source);
-        }));
-      }).then(async () => {
-        // inserts dummy data into table
-        // dev only
-        await Promise.all(this.dummyData.map(async (source) => {
-          console.log(`%c Inserting ${source}`, 'color: purple; font-weight: bold'); 
-          await this.createTable(source);
-        }));
-        this.setDatabaseState(true); 
+      await this.createDatabase().then(async() => {
+          await this.executeCreateTables().then(async () => {
+            await this.insertDummyData().then(async (x) => {
+              console.log(`%c Finished? ${x}`, 'color: blue; font-weight: bold');
+              this.setDatabaseState(true);
+            }).catch((e) => {
+              console.log(e);
+            });
+          }).catch((e) => {
+            console.log(e);
+          })
+      }).catch((e) => {
+        console.log(e);
       });
   }
 
@@ -90,13 +113,14 @@ export class DatabaseService {
       });
   }
 
-  public async createTable(source: string){
-    await this.http.get(source, {responseType: 'text'})
-            .toPromise().then((sql: string) => {
+  public async createTable(source: string): Promise<any> {
+    return await this.http.get(source, {responseType: 'text'})
+            .toPromise().then(async (sql: string) => {
               console.log(`%c ${source} retrieved, preparing SQL statement`, 'color: purple; font-weight: bold');
-              this.database.executeSql(sql, [])
-              .then(() => {
-                  console.log(`${source} accessed`);  
+              return await this.database.executeSql(sql, [])
+              .then(async (res) => {
+                  console.log(`%c ${source} SQL Statement executed!`, 'color: blue; font-weight: bold');  
+                  return res;
               })
               .catch((e) => console.log(e));    
         });
@@ -149,12 +173,12 @@ export class DatabaseService {
 
   public async getAllSetsBySession(id: number) {
     return this.database.executeSql(`select * from sets where sessionId = ${id}`).then(async (res) => {
-  //  return this.database.executeSql(`select * from sets`).then(async (res) => {
+    // return this.database.executeSql(`select * from sets`).then(async (res) => {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           console.log(res.rows.item(i));
-          // res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
+          res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
           row_data.push(res.rows.item(i));
         }
       }
