@@ -73,7 +73,7 @@ export class LastWorkoutComponent implements OnInit {
       volume += (set.reps * set.weight);
     });
     } catch (e) {
-      console.log(e);
+      console.log(`%c ${e.toString().substring(0,55)}`, 'color: red');
     }
     return volume;
   }
@@ -85,7 +85,7 @@ export class LastWorkoutComponent implements OnInit {
         reps += parseInt(set.reps.toString());
       });
     } catch (e) {
-      console.log(e);
+      console.log(`%c ${e.toString().substring(0,55)}`, 'color: red');
     }
     return reps;
   }

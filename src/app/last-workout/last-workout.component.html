@@ -1,5 +1,5 @@
 <ion-card color=primary> 
-  <ng-container *ngIf="sessionList">
+  <ng-container *ngIf="sessionList && sessionList.length > 0">
     <h6 class="col-12 centerText mb-0">
       You last worked out on {{sessionList[0]?.date?.toString().substring(0,10)}} 
     </h6>
@@ -17,7 +17,7 @@
       <div class="col-2 row centerText">Reps</div>
       <div class="col-2 row centerText">RPE</div>
     </ion-item>
-    <ion-item *ngFor="let set of sessionList[0].sets; let i = index" class="col-12" color="medium">
+    <ion-item *ngFor="let set of sessionList[0]?.sets; let i = index" class="col-12" color="medium">
       <div class="col-2 row centerText">{{i}}</div>
       <div class="col-3 row centerText">{{set.exercise.exerciseName}}</div>
       <div class="col-3 row centerText">{{set.weight}} {{set.weightType}}</div>
@@ -26,7 +26,11 @@
     </ion-item>
   </ion-list>
   </ng-container>
-  <ng-container *ngIf="!sessionList">
-    You haven't worked out yet!
+  <ng-container *ngIf="!sessionList || sessionList.length === 0">
+    <ion-item class="col-12" color="tertiary">
+      <h6 class="centerText col-12">
+        You haven't worked out yet!
+      </h6>
+    </ion-item>
   </ng-container>
 </ion-card>
