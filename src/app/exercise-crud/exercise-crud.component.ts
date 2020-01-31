@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver } from '@angular/core';
 import { Exercise } from '../models/exercise';
 import { DatabaseService } from '../database/database.service';
 import { AlertService } from '../notifications/alert.service';
@@ -24,7 +24,8 @@ export class ExerciseCrudComponent implements OnInit {
     public alertService: AlertService,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   saveExercise() {
     this.dbService.insertIntoExercise(this.exercise).then((res: Boolean) => {

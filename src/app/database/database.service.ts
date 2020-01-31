@@ -17,7 +17,7 @@ import { resolve } from 'url';
 export class DatabaseService {
   // flag used to delay dbService calls until after db is ready
   public databaseState: BehaviorSubject<Boolean>;
-  public insertingData: BehaviorSubject<Boolean>;
+  public databaseFilled: Boolean = false;
   public database: SQLiteObject;
 
   private sourceTables = ['assets/sql/setsTable.sql', 'assets/sql/sessionsTable.sql'];
@@ -37,6 +37,7 @@ export class DatabaseService {
      return await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
       this.database = db;
       await this.storage.get('database_filled').then(async (val) => {
+        this.databaseFilled = val;
         if (!val) {
           await this.fillDatabase(val);
         }
@@ -58,11 +59,13 @@ export class DatabaseService {
 
   public async insertDummyData(): Promise<any> {
     return await Promise.all(this.dummyData.map(async (source) => {
-      console.log(`%c Inserting ${source}`, 'color: purple; font-weight: bold'); 
-      return await this.createTable(source).then(async (x) => {
-        console.log(x);
-        return true;
-      });
+      if (!this.databaseFilled) {
+        console.log(`%c Inserting ${source}`, 'color: purple; font-weight: bold'); 
+        return await this.createTable(source).then(async (x) => {
+          console.log(x);
+          return true;
+        });
+      }
     }));
   }
 
@@ -141,9 +144,9 @@ export class DatabaseService {
     })
   }
 
-  public selectFromTableWhere(sVal: string, table: string, column: string, value: string): Promise<any> {
-    return this.database.executeSql(`select ${sVal} from ${table} where ${column} = ${value}`, [])
-    .then((res )=> {
+  public async selectFromTableWhere(sVal: string, table: string, column: string, value: string): Promise<any> {
+    return await this.database.executeSql(`select ${sVal} from ${table} where ${column} = ${value}`, [])
+    .then((res)=> {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -160,7 +163,7 @@ export class DatabaseService {
     let status = null;
     await this.database.
       executeSql(`insert into exercises (exerciseName, exerciseType, exerciseCategory) 
-      values ('${exercise.exerciseName}', '${exercise.exerciseType}', '${exercise.exerciseCategory}');`)
+      values ('${exercise.exerciseName}', '${exercise.exerciseType}', '${exercise.exerciseCategory}');`, [])
       .then((res) => {
         status = true;
       })
@@ -171,13 +174,11 @@ export class DatabaseService {
     return status;
   }
 
-  public async getAllSetsBySession(id: number) {
-    return this.database.executeSql(`select * from sets where sessionId = ${id}`).then(async (res) => {
-    // return this.database.executeSql(`select * from sets`).then(async (res) => {
+  public async getAllSetsBySession(id: number): Promise<any> {
+    return await this.database.executeSql(`select * from sets where sessionId = ${id}`, []).then(async (res) => {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
-          console.log(res.rows.item(i));
           res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
           row_data.push(res.rows.item(i));
         }

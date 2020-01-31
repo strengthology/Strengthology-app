@@ -40,6 +40,10 @@ export class ListPage implements OnInit {
 
   ngOnInit() {
     this.getExercises();
+    this.dbService.getAllSetsBySession(1).then((res) => {
+      console.log(res);
+    });
+
   }
 
   public getExercises() {

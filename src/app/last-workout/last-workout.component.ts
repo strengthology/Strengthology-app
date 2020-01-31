@@ -35,26 +35,25 @@ export class LastWorkoutComponent implements OnInit {
         await this.getSetData();
         this.sortSessions();
       }
+    })
+    .catch((e) => {
+      console.log(e);
     });
-    // .catch((e) => {
-    //   console.log(e);
-    // });
   }
 
   public async getSetData() {
     await Promise.all(this.sessionList.map(async (item: Session) => {
-      console.log(`%c Compiling Set Data`, 'color: green; font-weight: bold');
+      console.log(`%c Compiling Set Data for Set# ${item.id}`, 'color: green; font-weight: bold');
           await this.dbService.getAllSetsBySession(item.id).then((res: Set[]) => {
             console.log(`%c Retrieved Set Data`, 'color: green; font-weight: bold');
-            console.log(res);
             if (res) {
               res = res.sort((a, b) => (a.exercise.exerciseName > b.exercise.exerciseName) ? 1 : -1)
               item.sets = res as Set[];
             }
           })
-          // .catch((e) => {
-          //   console.log(e);
-          // });
+          .catch((e) => {
+            console.log(e);
+          });
     }));
   }
 
