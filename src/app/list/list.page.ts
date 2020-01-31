@@ -57,7 +57,7 @@ export class ListPage implements OnInit {
     })
   }
 
-  searchExercises(event) {
+  searchExercises() {
     // console.log(`%c Searching...`, 'color: green');
     try {
       if (this.selectName) {
