@@ -33,6 +33,7 @@
     "cordova-android": "8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "5.1.1",
+    "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
     "ionic-resources": "^0.1.8",
     "jasmine-core": "^3.5.0",
@@ -76,7 +77,8 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-sqlite-storage": {}
     },
     "platforms": [
       "browser",

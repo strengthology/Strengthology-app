@@ -51,13 +51,13 @@
   </ion-item>
   <ion-item *ngFor='let exercise of exerciseList' class="col-12">
     <div class="col-4 row centerText">
-      {{exercise.exerciseName.substring(0, 14)}}
+      {{exercise?.exerciseName?.substring(0, 14)}}
     </div>
     <div class="col-4 row centerText">
-      {{exercise.exerciseType}}
+      {{exercise?.exerciseType}}
     </div>
     <div class="col-4 row centerText">
-      {{exercise.exerciseCategory}}
+      {{exercise?.exerciseCategory}}
     </div>
   </ion-item>
   <!-- <ion-list>

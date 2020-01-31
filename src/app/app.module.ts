@@ -90,8 +90,8 @@ export class SQLiteObject{
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    // SQLite,
-    {provide: SQLite, useClass: SQLiteMock},
+    SQLite,
+    // {provide: SQLite, useClass: SQLiteMock},
     DatabaseService,
     AlertService,
     SQLitePorter

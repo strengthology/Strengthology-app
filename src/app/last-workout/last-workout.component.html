@@ -1,14 +1,14 @@
 <ion-card color=primary> 
   <ng-container *ngIf="sessionList">
     <h6 class="col-12 centerText mb-0">
-      You last worked out on {{sessionList[0].date.substring(0,10)}} 
+      You last worked out on {{sessionList[0]?.date?.substring(0,10)}} 
     </h6>
     <h6 class="col-12 centerText mt-1 mb-0">
       at {{sessionList[0].date.substring(11)}}
     </h6>
-    <h6 class="col-12 centerText mt-1">
-      You performed {{sessionList[0].sets.length}} sets and lifted {{sessionReps()}} reps for a total of {{sessionVolume()}} lbs/kgs
-    </h6>
+    <!-- <h6 class="col-12 centerText mt-1">
+      You performed {{sessionList[0]?.sets?.length}} sets and lifted {{sessionReps()}} reps for a total of {{sessionVolume()}} lbs/kgs
+    </h6> -->
   <ion-list>
     <ion-item class="col-12" color="tertiary">
       <div class="col-2 row centerText">Set#</div>

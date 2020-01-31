@@ -35,23 +35,25 @@ export class DatabaseService {
     // initial create block is used to create database and create+insert data into exercises table
      await this.sqlite.create({name: "data.db", location: "default"}).then(async (db : SQLiteObject) => {
               this.database = db;
-              await this.storage.get('database_filled').then(val => {
-                // if (!val) {
-                  this.fillDatabase();
-                // }
+              await this.storage.get('database_filled').then(async (val) => {
+                if (!val) {
+                  await this.fillDatabase(val);
+                }
               });
             }, (error) => {
               console.log("ERROR: ", error);
       })
       .then(async () => {
         // creates tables
-        await Promise.all(this.sourceTables.map(async (source) => {      
+        await Promise.all(this.sourceTables.map(async (source) => {     
+          console.log(`%c Creating ${source}`, 'color: purple; font-weight: bold'); 
           await this.createTable(source);
         }));
       }).then(async () => {
         // inserts dummy data into table
         // dev only
         await Promise.all(this.dummyData.map(async (source) => {
+          console.log(`%c Inserting ${source}`, 'color: purple; font-weight: bold'); 
           await this.createTable(source);
         }));
         this.setDatabaseState(true); 
@@ -66,24 +68,32 @@ export class DatabaseService {
     this.databaseState.next(boolean);
   }
 
-  public async fillDatabase() {
+  public async fillDatabase(val: boolean) {
     await this.http.get('assets/sql/exerciseTable.sql', {responseType: 'text'}).toPromise().then(async (res: string) => {
       const sqlArray = res.split(';');
       console.log(`%c Creating Exercises`, 'color: blue; font-weight: bold');
-      await Promise.all(sqlArray.map(async (sql) => {
-        await this.database.executeSql(sql, [])
-        .catch((e) => console.log(e)); 
-        }));
-      }).then(() => {
-        this.storage.set('database_filled', true); 
+       if (!val) {
+        await Promise.all(sqlArray.map(async (sql) => {
+          await this.database.executeSql(sql, [])
+          .catch((e) => console.log(e)); 
+          }))
+        .then(() => {
+          this.storage.set('database_filled', true); 
+        });
+       } else {
+        await this.database.executeSql(sqlArray[0], []).then((res) => {
+          console.log(res);
+        }).catch((e) => {
+          console.log(e);
+        });
+       }
       });
-     
   }
 
   public async createTable(source: string){
     await this.http.get(source, {responseType: 'text'})
             .toPromise().then((sql: string) => {
-              // console.log(data);
+              console.log(`%c ${source} retrieved, preparing SQL statement`, 'color: purple; font-weight: bold');
               this.database.executeSql(sql, [])
               .then(() => {
                   console.log(`${source} accessed`);  
@@ -139,16 +149,19 @@ export class DatabaseService {
 
   public async getAllSetsBySession(id: number) {
     return this.database.executeSql(`select * from sets where sessionId = ${id}`).then(async (res) => {
+  //  return this.database.executeSql(`select * from sets`).then(async (res) => {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
-          res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
+          console.log(res.rows.item(i));
+          // res.rows.item(i).exercise = JSON.parse(res.rows.item(i).exercise);
           row_data.push(res.rows.item(i));
         }
       }
       return row_data;
-    }).catch((e) => {
-      console.log(e);
     })
+    // .catch((e) => {
+    //   console.log(e);
+    // })
   }
 }
