@@ -3,6 +3,8 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Session } from '../models/sessions';
 import { Set } from '../models/set';
 import { DatabaseService } from '../database/database.service';
+import { RouterModule, Routes, ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-last-workout',
@@ -15,6 +17,7 @@ export class LastWorkoutComponent implements OnInit {
 
   constructor(
     public dbService: DatabaseService,
+    public router: Router,
   ) { }
 
   ngOnInit() {
@@ -88,5 +91,9 @@ export class LastWorkoutComponent implements OnInit {
       console.log(`%c ${e.toString().substring(0,55)}`, 'color: red');
     }
     return reps;
+  }
+
+  public goToExercises(): void {
+    this.router.navigateByUrl('/list');
   }
 }
