@@ -164,6 +164,38 @@ export class DatabaseService {
   }
   */
 
+  public async getAllSessions(): Promise<Array<Session>> {
+    let sessions: Array<Session> = [];
+
+    await this.database.executeSql("SELECT * FROM sessions")
+      .then(result => {
+        for(const row in result.rows){
+          // TODO: parsing happens here
+        }
+      })
+      .catch(error => {
+        // TODO: do error things here
+      });
+
+    return sessions;
+  }
+
+  public async getAllExercises(): Promise<Array<Exercise>> {
+    let exercises: Array<Exercise> = [];
+
+    await this.database.executeSql("SELECT * FROM exercises")
+      .then(result => {
+        for(const row in result.rows){
+          // TODO: parsing happens here
+        }
+      })
+      .catch(error => {
+        // TODO: do error things here
+      });
+
+    return exercises;
+  }
+
   public async insertIntoExercise(exercise: Exercise): Promise<Boolean> {
     
     const values: Array<string> = [

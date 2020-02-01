@@ -25,11 +25,12 @@ export class LastWorkoutComponent implements OnInit {
       console.log(`%c Database Ready?: ${res}`, 'color: green; font-weight: bold');
       if (res) {
         console.log(`%c Getting Stored Sessions`, 'color: green; font-weight: bold');
-        this.getSessions();
+        this.dbService.getAllSessions();
       }
     });
   }
 
+  /*
   public async getSessions() {
     await this.dbService.selectFromTable(`*`, `sessions`).then(async (res) => {
       if (res) {
@@ -43,6 +44,7 @@ export class LastWorkoutComponent implements OnInit {
       console.log(e);
     });
   }
+  */
 
   public async getSetData() {
     await Promise.all(this.sessionList.map(async (item: Session) => {

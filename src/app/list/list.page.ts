@@ -39,13 +39,13 @@ export class ListPage implements OnInit {
   
 
   ngOnInit() {
-    this.getExercises();
+    this.dbService.getAllExercises();
     this.dbService.getAllSetsBySession(1).then((res) => {
       console.log(res);
     });
 
   }
-
+  /*
   public getExercises() {
     this.dbService.selectFromTable(`*`, `exercises`).then((res) => {
       console.log(res);
@@ -56,7 +56,7 @@ export class ListPage implements OnInit {
       console.log(e);
     })
   }
-
+  */
   searchExercises() {
     // console.log(`%c Searching...`, 'color: green');
     try {
