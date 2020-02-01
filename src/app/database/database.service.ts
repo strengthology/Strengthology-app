@@ -129,21 +129,25 @@ export class DatabaseService {
         });
   }
 
+  /* 2/1/2020 - James - Commented out due to sql injection vulnerability
+
   public selectFromTable(sVal: string, table: string): Promise<any> {
     return this.database.executeSql(`select ${sVal} from ${table}`, [])
-    .then((res )=> {
+    .then((res)=> {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           row_data.push(res.rows.item(i));
         }
       }
-      return row_data;
     }).catch((e) => {
       console.log(e);
     })
   }
+  */
 
+  /* 2/1/2020 - James - Commented out due to sql injection vulnerability
+  
   public async selectFromTableWhere(sVal: string, table: string, column: string, value: string): Promise<any> {
     return await this.database.executeSql(`select ${sVal} from ${table} where ${column} = ${value}`, [])
     .then((res)=> {
@@ -158,19 +162,22 @@ export class DatabaseService {
       console.log(e);
     })
   }
+  */
 
   public async insertIntoExercise(exercise: Exercise): Promise<Boolean> {
-    let status = null;
-    await this.database.
-      executeSql(`insert into exercises (exerciseName, exerciseType, exerciseCategory) 
-      values ('${exercise.exerciseName}', '${exercise.exerciseType}', '${exercise.exerciseCategory}');`, [])
-      .then((res) => {
-        status = true;
-      })
-      .catch((e) => {
-        console.log(e);
-        status = false;
-      });
+    
+    const values: Array<string> = [
+      exercise.exerciseName,
+      exercise.exerciseType,
+      exercise.exerciseCategory,
+    ];
+
+    let status: boolean;
+    await this.database
+      .executeSql("INSERT into EXERCISES (exerciseName, exerciseType, exerciseCategory) values (?, ?, ?)", values)
+      .then(result => status = true)
+      .catch(error => status = false);
+    
     return status;
   }
 
