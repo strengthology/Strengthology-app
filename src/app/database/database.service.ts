@@ -182,7 +182,7 @@ export class DatabaseService {
   }
 
   public async getAllSetsBySession(id: number): Promise<any> {
-    return await this.database.executeSql(`select * from sets where sessionId = ${id}`, []).then(async (res) => {
+    return await this.database.executeSql("SELECT * FROM sets WHERE sessionId = ?", [id]).then(async (res) => {
       const row_data = [];
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
@@ -191,9 +191,6 @@ export class DatabaseService {
         }
       }
       return row_data;
-    })
-    // .catch((e) => {
-    //   console.log(e);
-    // })
+    });
   }
 }
