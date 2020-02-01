@@ -18,10 +18,3 @@ insert into exercises (id, exerciseName, exerciseType, exerciseCategory) values 
 insert into exercises (id, exerciseName, exerciseType, exerciseCategory) values (null, 'Power Snatch', 'Strength', 'Olympic Lifting');
 insert into exercises (id, exerciseName, exerciseType, exerciseCategory) values (null, 'Power Clean', 'Strength', 'Olympic Lifting');
 insert into exercises (id, exerciseName, exerciseType, exerciseCategory) values (null, 'Power Jerk', 'Strength', 'Olympic Lifting');
-
-
-
-
-
-
-

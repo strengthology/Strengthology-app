@@ -6,7 +6,4 @@ CREATE TABLE IF NOT EXISTS sets (
     weightType varchar(50),
     reps varchar(50),
     rpe varchar(50)
-);
-
-
-   
+); 
