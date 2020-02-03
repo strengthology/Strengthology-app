@@ -168,7 +168,7 @@ export class DatabaseService {
     let sessions: Array<Session> = [];
 
     await this.database.executeSql("SELECT * FROM sessions")
-      .then(result => {
+      .then((result) => {
         for(const row in result.rows){
           // TODO: parsing happens here
         }
