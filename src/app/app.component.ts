@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { DatabaseService } from './database/database.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

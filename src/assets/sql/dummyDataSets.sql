@@ -18,5 +18,4 @@ INSERT INTO SETS
     ('{"id": "1", "exerciseName": "Squat", "exerciseType": "Strength", "exerciseCategory": "Powerlifting"}', 3, 340, 'lb', 5, 10),
     ('{"id": "1", "exerciseName": "Squat", "exerciseType": "Strength", "exerciseCategory": "Powerlifting"}', 4, 355, 'lb', 4, 9),
     ('{"id": "1", "exerciseName": "Squat", "exerciseType": "Strength", "exerciseCategory": "Powerlifting"}', 5, 370, 'lb', 2, 9.5),
-    ('{"id": "1", "exerciseName": "Squat", "exerciseType": "Strength", "exerciseCategory": "Powerlifting"}', 6, 275, 'lb', 8, 4)
-); 
+    ('{"id": "1", "exerciseName": "Squat", "exerciseType": "Strength", "exerciseCategory": "Powerlifting"}', 6, 275, 'lb', 8, 4);
